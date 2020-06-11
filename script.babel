@@ -1,0 +1,89 @@
+/*const quotesDatabase = [
+  {quote: "Quote 1", author: "Author 1"},
+  {quote: "Quote 2", author: "Author 2"},
+  {quote: "Quote 3", author: "Author 3"},
+  {quote: "Quote 4", author: "Author 4"},
+  {quote: "Quote 5", author: "Author 5"}
+];*/
+
+//Taken from the sample page
+
+let quotesData;
+
+function getQuotes() {
+  return $.ajax({
+    headers: {
+      Accept: "application/json"
+    },
+    url: 'https://gist.githubusercontent.com/camperbot/5a022b72e96c4c9585c32bf6a75f62d9/raw/e3c6895ce42069f0ee7e991229064f167fe8ccdc/quotes.json',
+    success: function(jsonQuotes) {
+      if (typeof jsonQuotes === 'string') {
+        quotesData = JSON.parse(jsonQuotes);
+        console.log('quotesData');
+        console.log(quotesData);
+      }
+    }
+  });
+}
+
+function getRandomQuote() {
+  return quotesData.quotes[Math.floor(Math.random() * quotesData.quotes.length)];
+}
+
+//End taken from sample page
+
+
+$(document).ready(function() {
+  getQuotes().then(() => {
+    let generateNewQuote = getRandomQuote();
+    let getNewQuote = generateNewQuote.quote;
+    let getNewAuthor = generateNewQuote.author;
+    // User Story #6: On first load, my quote machine displays a random quote in the element with id="text".
+    $("#text").text("\"" + getNewQuote + "\"");
+    //User Story #7: On first load, my quote machine displays the random quote's author in the element with id="author".
+    $("#author").text("- " + getNewAuthor);
+    //User Story #10: I can tweet the current quote by clicking on the #tweet-quotea element. This a element should include the "twitter.com/intent/tweet" path in its href attribute to tweet the current quote.
+    $("#tweet-quote").attr("href", "https://www.twitter.com/intent/tweet?text=\"" + getNewQuote + "\" " + getNewAuthor);
+    //User Story #8: When the #new-quote button is clicked, my quote machine should fetch a new quote and display it in the #text element.
+    // User Story #9: My quote machine should fetch the new quote's author when the #new-quote button is clicked and display it in the #author element.
+    $("#new-quote").click(function() {
+      generateNewQuote = getRandomQuote();
+      getNewQuote = generateNewQuote.quote;
+      getNewAuthor = generateNewQuote.author;
+      $("#text").text("\"" + getNewQuote + "\"");
+      $("#author").text("- " + getNewAuthor);
+      $("#tweet-quote").attr("href", "https://www.twitter.com/intent/tweet?text=\"" + getNewQuote + "\" " + getNewAuthor);
+    });
+  });
+  
+});
+
+
+
+// !! IMPORTANT README:
+
+// You may add additional external JS and CSS as needed to complete the project, however the current external resource MUST remain in place for the tests to work. BABEL must also be left in place. 
+
+/***********
+INSTRUCTIONS:
+  - Select the project you would 
+    like to complete from the dropdown 
+    menu.
+  - Click the "RUN TESTS" button to
+    run the tests against the blank 
+    pen.
+  - Click the "TESTS" button to see 
+    the individual test cases. 
+    (should all be failing at first)
+  - Start coding! As you fulfill each
+    test case, you will see them go   
+    from red to green.
+  - As you start to build out your 
+    project, when tests are failing, 
+    you should get helpful errors 
+    along the way!
+    ************/
+
+// PLEASE NOTE: Adding global style rules using the * selector, or by adding rules to body {..} or html {..}, or to all elements within body or html, i.e. h1 {..}, has the potential to pollute the test suite's CSS. Try adding: * { color: red }, for a quick example!
+
+// Once you have read the above messages, you can delete all comments. 
